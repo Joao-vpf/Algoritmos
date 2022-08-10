@@ -1,0 +1,99 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef pair<int,int> pp;
+
+vector <pp> adj[501];
+vector <bool> vis(501,false), passou(501, false);
+int n,cont;
+
+bool buscapair(int pos, int encontrar)
+{
+    for (auto e : adj[pos])
+    {
+        if (e.second==encontrar)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int dijkstra (int inicio,int fim)
+{
+    vector <int> dist(n,INT_MAX);
+    dist[inicio]=0; 
+    priority_queue <pp, vector<pp>, greater<pp>> q;
+    q.push({0,inicio});
+    while (q.size())
+    {
+        int u = q.top().second;
+        int custo = q.top().first;
+        q.pop();
+        if (u == fim) return custo;
+        if (vis[u])
+        {
+            continue;
+        }
+        vis[u]=true;
+        for (auto e : adj[u])
+        {
+            int w=e.first, v=e.second;
+            if (buscapair(e.second, u) && vis[v]==false)
+            {
+                cont+=e.first;
+            }
+            if (dist[v]>dist[u]+w)
+            {
+                dist[v]=dist[u]+w;
+                q.push({dist[v],v});
+            }
+            else
+            {
+                if (dist[v]>dist[u]+w)
+                {
+                    dist[v]=dist[u]+w;
+                    q.push({dist[v],v});
+                }
+            }
+            passou[v]=true;
+        }
+    }
+}
+
+int main()
+{
+    int e, x,y, h;
+    while (cin >> n >>e && n!=0)
+    {
+        for (int i=0; i<e; i++)
+        {
+            cin >> x >> y>>h;
+            adj[x].push_back({h,y});
+        }
+        cin >> h; //k;
+        for (int i=0; i<h; i++)
+        {
+            cin >> x >> y;
+            int res =dijkstra(x, y);
+            if (passou[y])
+            {
+                cout <<res-cont <<endl;
+            }
+            else
+            {    
+                cout << "Nao e possivel entregar a carta"<< endl;
+            }
+            for (int i=0; i<=n; i++)
+            {
+                vis[i]=false;
+                passou[i]=false;
+            }
+            cont=0;
+        }
+        for (int i=0; i<=n; i++)
+        {
+            adj[i].clear();
+        }
+    }
+}
