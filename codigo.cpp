@@ -232,5 +232,25 @@ int fat(int n) //cria um fatorial
     return fat(n-1)*n;
 }
 
-
+int busca_binaria(int x, int vet[],int inicio, int fim)
+{
+   int aux=(fim+inicio)/2;
+   if(vet[inicio]==x)
+   {
+      return inicio;
+   }
+   if (vet[fim]==x)
+   {
+      return fim;
+   }
+   if (abs(fim-inicio)==1)
+   {
+      return -1;
+   }
+   if (vet[aux]>x)
+   {  
+      return busca_binaria(x,vet, inicio, aux);
+   }
+      return busca_binaria(x,vet,aux, fim);
+}
     
