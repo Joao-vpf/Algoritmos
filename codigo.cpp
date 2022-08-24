@@ -232,6 +232,9 @@ int fat(int n) //cria um fatorial
     return fat(n-1)*n;
 }
 
+
+//Buscas:
+
 int busca_binaria(int vet[], int procurado, int inicio, int fim) //faz uma busca binaria
 {
     if (inicio==fim)
@@ -245,7 +248,10 @@ int busca_binaria(int vet[], int procurado, int inicio, int fim) //faz uma busca
        return busca_binaria(vet, procurado,inicio , ((inicio+fim)/2));
 }
 
-void marge_vet(int vet[], int inicio, int fim) //faz o marge sort
+//ORDENAÇÃO:
+
+//Marge:
+void marge(int vet[], int inicio, int fim) //faz o marge sort
 {
     int meio=(inicio+fim)/2, aux[(fim-inicio)+1];
     for (int i=inicio, j=meio+1, k=0; i<=meio || j<=fim;)
@@ -287,3 +293,18 @@ void marge_vet(int vet[], int inicio, int fim) //faz o marge sort
         vet[j]=aux[i];
     }
 }
+
+void margesort(int vet[], int inicial, int fim)
+{
+    if (inicial!=fim)
+    {
+        if (vet[(inicial+fim)/2])
+        {
+            margesort(vet, inicial , (inicial+fim)/2);
+        }
+        margesort(vet, ((inicial+fim)/2)+1, fim);
+        marge(vet, inicial, fim);
+    }
+}
+
+//
