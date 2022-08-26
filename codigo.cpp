@@ -174,6 +174,46 @@ void Dijkstra (int inicio)
     }
 }
 
+//FLOOD FILL
+void flfd(int x, int y,int m, int n) //inicio da procura, tamanho vertical, tamanho horizontal
+{
+	vis[x][y]=1;
+	//normal
+	if (y>0 && vis[x][y-1]==0 && mat[x][y-1]==1)
+	{
+		flfd(x, y-1,m,n);
+	}
+	if (x<m-1 && vis[x+1][y]==0 && mat[x+1][y]==1)
+	{
+		flfd(x+1, y,m,n);
+	}
+	if (x>0 && vis[x-1][y]==0 && mat[x-1][y]==1)
+	{
+		flfd(x-1, y,m,n);
+	}
+	if (y<n-1 && vis[x][y+1]==0 && mat[x][y+1]==1)
+	{
+		flfd(x, y+1,m,n);
+	}
+	//diagonais
+	if (x<m-1 && y<n-1 && vis[x+1][y+1]==0 && mat[x+1][y+1]==1)
+	{
+		flfd(x+1, y+1,m,n);
+	}
+	if (x>0 && y>0 && vis[x-1][y-1]==0 && mat[x-1][y-1]==1)
+	{
+		flfd(x-1, y-1,m,n);
+	}
+	if (x>0 && y<n-1 && vis[x-1][y+1]==0 && mat[x-1][y+1]==1)
+	{
+		flfd(x-1, y+1,m,n);
+	}
+	if (x<m-1 && y>0 && vis[x+1][y-1]==0 && mat[x+1][y-1]==1)
+	{
+		flfd(x+1, y-1,m,n);
+	}
+}
+
 //COMPLEMENTAR GRAFO
 
 int contador (int v) //conta quantos nodos estão conexos funciona melhor com nao dirigidos
