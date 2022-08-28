@@ -10,13 +10,14 @@ using namespace std;
 
 typedef pair<int,int> p 
 
-vector <int> adj[1000];
+vector <int> adj[1000], color(1000,-1);
 vector <bool> vis(1000,false);
 int dis[1000], timer;
 vector <p> temp[1000];
 
 //GRAFOS:
 
+//BFS
 void bfs(int inicio, int fim) //estilo bfs "unidimensional" conta distancia
 {
    for (int i=0; i<1000; i++)
@@ -61,6 +62,33 @@ void bfs(int u) //bfs analisa por adj
     }
 }
 
+bool bicoloring(int x)//Objetivo identificar um grafo impar
+{
+	queue <int> q;
+	q.push(x);
+	cor[x]=1;
+	while (!q.empty())
+	{
+		int u = q.front();
+		q.pop();
+		
+		for(auto e :  adj[u])
+		{
+			if (cor[e]==-1)
+			{
+				cor[e]=1-cor[u];
+				q.push(e);
+			}
+			else if (cor[e]==cor[u])
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+//DFS - CODIGOS DERIVADOS
 void dfs(int u) //dfs recursivo (confere toda a raiz)
 {
     //u = inicio
@@ -106,29 +134,10 @@ void dfs(int u, int j) //dfs conta o tempo de saida e de entrada;
     temp[v].second=timer++;
 }
 
-void back(int i, int j) //bfs "multidimensional"
-{
-    int dist[n][m]=-1;
-    dist[i][j]=0;
-    queue <p> q;
-    q.push(make_pair(i,j))
-    while (q.size())
-    {
-        if (dist[n-1][m-1]!=-1)
-        {
-            return dist[n-1][m-1];
-        }
-        int x = q.front().first;
-        int y = q.front().second;
-        q.pop();
-        if (mat[x-1][y]==-1 && dist[x-1][y]==-1)
-        {
-            dist[x-1][y]=dist[x][y]+1;
-            q.push(make_pair(x-1,y));
-        }
-    }
-}
 
+
+//FLOOD FILL
+//Nao marca que vistou
 void back(int i, int j) //dfs "multidimensional"
 {
 	mat[i][j]='T';
@@ -151,30 +160,7 @@ void back(int i, int j) //dfs "multidimensional"
 	
 }
 
-void Dijkstra (int inicio)
-{
-    dist[n]=INT_MAX;
-    dist[inicio]=0;
-
-    priority_queue <p,vector<p>,greater<p>> q;
-    q.push(make_pair(0,inicio));
-    while (q.size())
-    {
-        int u = q.top().second;
-        q.pop();
-        for (int i=0; i<adj[u].size(); i++)
-        {
-            p c = adj[u][i];
-            if (dist[c.second]>dist[u]+c.first)
-            {
-                dist[c.second]=dist[u]+c.first;
-                q.push(make_pair(c.second,dist[c.second]));
-            }
-        }
-    }
-}
-
-//FLOOD FILL
+//Marca que visitou
 void flfd(int x, int y,int m, int n) //inicio da procura, tamanho vertical, tamanho horizontal
 {
 	vis[x][y]=1;
@@ -212,6 +198,30 @@ void flfd(int x, int y,int m, int n) //inicio da procura, tamanho vertical, tama
 	{
 		flfd(x+1, y-1,m,n);
 	}
+}
+
+//FLOOD FILL / BFS
+void back(int i, int j) //bfs "multidimensional"
+{
+    int dist[n][m]=-1;
+    dist[i][j]=0;
+    queue <p> q;
+    q.push(make_pair(i,j))
+    while (q.size())
+    {
+        if (dist[n-1][m-1]!=-1)
+        {
+            return dist[n-1][m-1];
+        }
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop();
+        if (mat[x-1][y]==-1 && dist[x-1][y]==-1)
+        {
+            dist[x-1][y]=dist[x][y]+1;
+            q.push(make_pair(x-1,y));
+        }
+    }
 }
 
 //COMPLEMENTAR GRAFO
