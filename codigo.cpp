@@ -282,6 +282,29 @@ int fat(int n) //cria um fatorial
     return fat(n-1)*n;
 }
 
+//CONVERSORES: 
+
+string hextobin(string a)
+{
+	bitset<4> bis;//bitset
+	string res;
+	for (char x : a)
+	{
+		x=toupper(x);//cctype
+		int b=x;
+		if (b<=int ('9'))
+		{
+			bis=b-48;
+			res+=bis.to_string();
+		}
+		else
+		{
+			bis=b-55;
+			res+=bis.to_string();
+		}
+	}
+	return res;
+}
 
 //Buscas:
 
