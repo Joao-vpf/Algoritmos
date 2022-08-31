@@ -338,6 +338,18 @@ string hextobin(string a)
 	return res;
 }
 
+int s_int(string a) //String em inteiro
+{
+	int c=a.size()-1;
+	int y=0;
+	for (char x : a)
+	{
+		y+=(x-'0')*pow(10,c);
+		c--;
+	}
+	return y;
+}
+
 //Buscas:
 
 int busca_binaria(int vet[], int procurado, int inicio, int fim) //faz uma busca binaria
