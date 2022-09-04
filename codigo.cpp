@@ -15,6 +15,19 @@ vector <bool> vis(1000,false);
 int dis[1000], timer;
 vector <p> temp[1000];
 
+//ALOCAÇÃO DINAMICA DE MATRIZ
+
+int **x;
+//criar array n ponteiros para int
+int x = new int*[n];
+for (int i=0; i<elementos; i++)
+{
+	//cada array é um array de n elementos
+	x[i] = new int[n]
+}
+// Vector de vector criando um elemento que tenha tamanho n e que guarde outro vector de tamanho n
+vector <vector <int>> y(n, vector <int> (n));
+
 //GRAFOS:
 
 //BFS
