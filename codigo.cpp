@@ -14,6 +14,7 @@ vector <int> adj[1000], color(1000,-1);
 vector <bool> vis(1000,false);
 int dis[1000], timer;
 vector <p> temp[1000];
+stack<int> mystack;
 
 //ALOCAÇÃO DINAMICA DE MATRIZ
 
@@ -123,6 +124,20 @@ bool bicoloring(int x)//Objetivo identificar um grafo impar
 }
 
 //DFS - CODIGOS DERIVADOS
+
+void topologic(int x)
+{
+    vis[x]=true;
+    for (auto e : adj[x])
+    {
+        if (!vis[e])
+        {
+            dfs(e);
+        }
+    }
+    mystack(x);
+}
+
 void dfs(int u) //dfs recursivo (confere toda a raiz)
 {
     //u = inicio
