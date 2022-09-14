@@ -135,7 +135,7 @@ void topologic(int x)
             dfs(e);
         }
     }
-    mystack(x);
+    mystack.push(x);
 }
 
 void dfs(int u) //dfs recursivo (confere toda a raiz)
