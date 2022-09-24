@@ -374,6 +374,24 @@ int contador (int v) //conta quantos nodos estão conexos funciona melhor com na
 
 //Funções: 
 
+int mmc(int num1, int num2) { //mmc
+
+    int resto, a, b;
+
+    a = num1;
+    b = num2;
+
+    do {
+        resto = a % b;
+
+        a = b;
+        b = resto;
+
+    } while (resto != 0);
+
+    return ( num1 * num2) / a;
+}
+
 int multiplicar_matrizes( //calcula multiplicação de matriz de mesmo tamanho
         int matA[][MAX], int na, int ma,
         int matB[][MAX], int nb, int mb,
