@@ -96,6 +96,65 @@ void bfs(int x, int pes) //peso diminui encontra limite
 		}
 	}
 }
+//FORTE MENTE CONEXO
+void topo(int x)
+{
+    vis[x]=true;
+    for (auto e : adj[x])
+    {
+        if(!vis[e])
+        {
+            topo(e);
+        }
+    }
+    s.push(x);
+}
+
+void trans(int x)
+{
+    for (int i=0; i<x; i++)
+    {
+        for (auto e:adj[i])
+        {
+            gr[e].pb(i);
+        }
+    }
+}
+
+void dfs(int x)
+{
+    vis[x]=true;
+    for (auto e : gr[x])
+    {
+        if(!vis[e])
+        {
+            dfs(e);
+        }
+    }
+}
+
+oia()
+{
+	while (s.size())
+	{
+	    int u = s.top();
+	    s.pop();
+	    if(!vis[u])
+	    {
+		dfs(u);
+		//resultado dos nos
+	    }
+	}
+}
+
+/*int main()
+{
+	topo();
+	trans();
+	oia()
+}
+*/
+
 //PINTADORES DE GRAFO 
 /*
  Esta função resolve a coloração m
