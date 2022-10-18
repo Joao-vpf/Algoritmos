@@ -440,27 +440,30 @@ void flfd(int x, int y,int m, int n) //inicio da procura, tamanho vertical, tama
 }
 
 //FLOOD FILL / BFS
-void back(int i, int j) //bfs "multidimensional"
+int dx[8]={1,0,-1,0, -1, 1, -1, 1};
+int dy[8]={0,1,0,-1,-1, 1,1,-1};
+int back(int i, int j) //bfs flood fill[
 {
-    int dist[n][m]=-1;
     dist[i][j]=0;
     queue <p> q;
-    q.push(make_pair(i,j))
+    q.push(make_pair(i,j));
     while (q.size())
     {
-        if (dist[n-1][m-1]!=-1)
-        {
-            return dist[n-1][m-1];
-        }
         int x = q.front().first;
         int y = q.front().second;
         q.pop();
-        if (mat[x-1][y]==-1 && dist[x-1][y]==-1)
+        for (int l=0; l<8; l++)
         {
-            dist[x-1][y]=dist[x][y]+1;
-            q.push(make_pair(x-1,y));
+            int h = x+dx[l];
+            int w = y+dy[l];
+            if(w>0 && w<9 && h>0 && h<9 && dist[h][w]==-1)
+            {
+                dist[h][w]=dist[x][y]+1;
+                q.push({h,w});
+            }
         }
     }
+    return dist[b1][b2];
 }
 
 //COMPLEMENTAR GRAFO
