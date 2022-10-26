@@ -776,4 +776,38 @@ int discreteLogarithm(int a, int b, int m) {
     }
     return -1;
 }
+
+//converter preorder e inorder em posorder
+#include<bits/stdc++.h>
+using namespace std;
+ 
+int preIndex = 0;
+void printPost(int in[], int pre[], int inStrt,
+               int inEnd, map<int, int> hm)
+{
+    if (inStrt > inEnd)
+        return;        
+ 
+    // Find index of next item in preorder traversal in
+    // inorder.
+    int inIndex = hm[pre[preIndex++]];
+ 
+    // traverse left tree
+    printPost(in, pre, inStrt, inIndex - 1, hm);
+ 
+    // traverse right tree
+    printPost(in, pre, inIndex + 1, inEnd, hm);
+ 
+    // print root node at the end of traversal
+    cout << in[inIndex] << " ";
+}
+ 
+void printPostMain(int in[], int pre[],int n)
+{
+    map<int,int> hm ;
+    for (int i = 0; i < n; i++)
+    hm[in[i]] = i;
+         
+    printPost(in, pre, 0, n - 1, hm);
+}
  
