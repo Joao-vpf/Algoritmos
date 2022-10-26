@@ -777,10 +777,9 @@ int discreteLogarithm(int a, int b, int m) {
     return -1;
 }
 
-//converter preorder e inorder em posorder
-#include<bits/stdc++.h>
-using namespace std;
+//conversões em arvores
  
+// preorder e inorder para posorder
 int preIndex = 0;
 void printPost(int in[], int pre[], int inStrt,
                int inEnd, map<int, int> hm)
@@ -810,4 +809,96 @@ void printPostMain(int in[], int pre[],int n)
          
     printPost(in, pre, 0, n - 1, hm);
 }
+
+
+ //posorder e inorder para preorder
  
+int search(int in[], int data,int n)
+{
+    int i = 0;
+    for (i = 0; i < n; i++)
+        if (in[i] == data)
+            return i;
+    return i;
+}
+
+void fillPre(int in[], int post[], int inStrt,
+            int inEnd, stack<int> &s,int n)
+{
+    if (inStrt > inEnd)
+        return;
+ 
+    // Find index of next item in postorder traversal in
+    // inorder.
+    int val = post[postIndex];
+    int inIndex = search(in, val, n);
+    postIndex--;
+ 
+    // traverse right tree
+    fillPre(in, post, inIndex + 1, inEnd, s, n);
+ 
+    // traverse left tree
+    fillPre(in, post, inStrt, inIndex - 1, s, n);
+ 
+    s.push(val);
+}
+ 
+void printPreMain(int in[], int post[],int n)
+{
+    int len = n;
+    postIndex = len - 1;
+    stack<int> s ;
+    fillPre(in, post, 0, len - 1, s, n);
+    while (s.size() > 0)
+    {
+        cout << s.top() << " ";
+        s.pop();
+    }
+}
+ 
+//converte preorder em pos order
+void findPostOrderUtil(int pre[], int n, int minval,
+                       int maxval, int& preIndex)
+{
+ 
+    // If entire preorder array is traversed then
+    // return as no more element is left to be
+    // added to post order array.
+    if (preIndex == n)
+        return;
+ 
+    // If array element does not lie in range specified,
+    // then it is not part of current subtree.
+    if (pre[preIndex] < minval || pre[preIndex] > maxval) {
+        return;
+    }
+ 
+    // Store current value, to be printed later, after
+    // printing left and right subtrees. Increment
+    // preIndex to find left and right subtrees,
+    // and pass this updated value to recursive calls.
+    int val = pre[preIndex];
+    preIndex++;
+ 
+    // All elements with value between minval and val
+    // lie in left subtree.
+    findPostOrderUtil(pre, n, minval, val, preIndex);
+ 
+    // All elements with value between val and maxval
+    // lie in right subtree.
+    findPostOrderUtil(pre, n, val, maxval, preIndex);
+ 
+    cout << val << " ";
+}
+ 
+void findPostOrder(int pre[], int n)
+{
+ 
+    // To store index of element to be
+    // traversed next in preorder array.
+    // This is passed by reference to
+    // utility function.
+    int preIndex = 0;
+ 
+    findPostOrderUtil(pre, n, INT_MIN, INT_MAX, preIndex);
+}
