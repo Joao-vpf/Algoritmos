@@ -131,7 +131,7 @@ class fenwick_tree
 	
 	void up(int id, int x)
 	{
-		upd(id, x);
+		upd(id, x);//precisa comecar com id = 1
 	}
 	
 	void upd(int l, int r, int x)
