@@ -533,6 +533,40 @@ int back(int i, int j) //bfs flood fill[
     return dist[b1][b2];
 }
 
+//Bellman Ford	
+	
+bool bford(int V, int E)
+{
+    vector <int> dis(V, INT_MAX);
+    dis[0] = 0;
+
+    for (int i = 0; i < V - 1; i++) {
+
+        for (int j = 0; j < E; j++) {
+            if (dis[adj[j][0]] != INT_MAX && dis[adj[j][0]] + adj[j][2] <
+                                               dis[adj[j][1]])
+                dis[adj[j][1]] =
+                        dis[adj[j][0]] + adj[j][2];
+        }
+    }
+
+    for (int i = 0; i < E; i++) {
+        int x = adj[i][0];
+        int y = adj[i][1];
+        int weight = adj[i][2];
+        if (dis[x] != INT_MAX && dis[x] + weight < dis[y]) //verifica se tem um ciclo negativo
+        {
+            return true;
+        }
+    }
+    return false;
+/*
+    for (int i = 0; i < V; i++) //mostra a distancia de cada um
+        cout << i << "\t\t" << dis[i] << endl;*/
+}
+
+	
+	
 //COMPLEMENTAR GRAFO
 
 int contador (int v) //conta quantos nodos estão conexos funciona melhor com nao dirigidos
