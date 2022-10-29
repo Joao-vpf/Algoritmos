@@ -543,10 +543,8 @@ bool bford(int V, int E)
     for (int i = 0; i < V - 1; i++) {
 
         for (int j = 0; j < E; j++) {
-            if (dis[adj[j][0]] != INT_MAX && dis[adj[j][0]] + adj[j][2] <
-                                               dis[adj[j][1]])
-                dis[adj[j][1]] =
-                        dis[adj[j][0]] + adj[j][2];
+            if (dis[adj[j][0]] != INT_MAX && dis[adj[j][1]]>dis[adj[j][0]] + adj[j][2])
+                dis[adj[j][1]] =dis[adj[j][0]] + adj[j][2];
         }
     }
 
