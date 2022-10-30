@@ -534,14 +534,14 @@ int back(int i, int j) //bfs flood fill[
 }
 
 //Bellman Ford	
-void dfsbelam(int x, vector<int> caca[], vector<bool>& vis) //pinta todos que estao em ciclos
+void dfsbelman(int x, vector<int> caca[], vector<bool>& vis) //pinta todos que estao em ciclos
 {
     vis[x]=true;
     for (auto e: caca[x])
     {
         if(!vis[e])
         {
-            dfsbelam(e, caca,vis);
+            dfsbelman(e, caca,vis);
         }
     }
 }
