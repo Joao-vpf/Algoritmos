@@ -142,3 +142,58 @@ class fenwick_tree
 		up(r, -x);
 	}
 };
+
+
+struct primosgold
+{
+	map<int,int> id;
+	unsigned  long long int cont=0;
+    ad[cont]=2;
+    cont++;
+    for (unsigned long long int i=3; i<1000000; i++)
+    {
+        if(i%2!=0)
+        {
+            unsigned long long int j=3;
+            for(; j<=sqrt(i); j+=2)
+            {
+                if(i%j==0)
+                {
+                    break;
+                }
+            }
+            if(j>sqrt(i))
+            {
+                cont++;
+                ad[cont]=i;
+            }
+        }
+    }
+    unsigned long long int n;
+    while (cin >>n && n!=0)
+    {
+        unsigned long long int a=2, b;
+        if(n%2==0) {
+            for (unsigned long long int i = 0; i < ad.size() && a < n; i++) {
+                a = ad[i];
+                b = n - a;
+                if (b % 2 != 0) {
+                    unsigned long long int j = 3;
+                    for (; j <= sqrt(b); j +=2) {
+                        if (b % j == 0) {
+                            break;
+                        }
+                    }
+                    if (j > sqrt(b)) {
+                        cout << n << " = " << a << " + " << b << endl;
+                        break;
+                    }
+                }
+            }
+        }
+        if(n%2!=0 || a>=n)
+        {
+           cout<< "Goldbach's conjecture is wrong."<<endl;
+        }
+    }
+}
