@@ -146,7 +146,7 @@ class fenwick_tree
 
 struct primosgold
 {
-	map<int,int> id;
+	map<int,int> ad;
 	unsigned  long long int cont=0;
     ad[cont]=2;
     cont++;
