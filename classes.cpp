@@ -2,6 +2,61 @@
 #include <vector>
 using namespace std;
 
+struct lisestranha //busca achar a quantidade de ordens crescentes
+{
+//Binary Indexed Tree or Fenwick Tree + lucas
+    void update(long long int rank, long long int increment, vector<long long int> &binaryIndexTree) {
+        while (rank < binaryIndexTree.size()) { // Aumentar a classificação actual e todas as classificações superiores
+            binaryIndexTree[rank - 1] += increment;
+            rank += (rank & -rank);
+        }
+    }
+
+    long long int getValue(long long int rank, const vector<long long int> &binaryIndexTree) {
+        long long int result = 0;
+        while (rank > 0) { // Pesquisar a classificação atual todas as classificações inferiores
+            result += binaryIndexTree[rank - 1]; // Somar qualquer valor encontrado no resultado
+            rank -= (rank & -rank);
+        }
+        return result;
+    }
+
+    void res(long long int n, long long int k) {
+        vector<long long int> values(n); //entrada de valores
+        for (long long int i = 0; i < n; i++) {
+            cin >> values[i];
+        }
+        vector<vector<long long int>> cumBIT(k, vector<long long int>(n)); // 0 fora de cumBIT esta é a árvore binária
+        vector<long long int> temp(n); //  vetor usado como auxiliar
+        map<long long int, long long int> mapIndex; // Isto irá traduzir-se do valor em índice para a contagem baseada em 1 de valores inferiores a este no bit
+
+        partial_sort_copy(values.cbegin(), values.cend(), temp.begin(), temp.end());
+
+        for (long long int i = 0; i < n; ++i) {
+            mapIndex.insert(make_pair(temp[i], i +
+                                               1)); // a insercao só permitirá que cada numero seja adicionado ao mapa pela primeira vez
+        }
+
+        vector<vector<long long int>> binaryIndexTree(k, vector<long long int>(
+                n)); // matriz usada na contagem de possibilidades
+        long long int result = 0;
+
+        for (auto it = values.cbegin(); it != values.cend(); ++it) {
+            long long int rank = mapIndex[*it];
+            long long int value = 1; // Número de sequências a adicionar a esta classificação e todas as classificações subsequentes
+            update(rank, value,
+                   binaryIndexTree[0]); // colocar a árvore binária de índice para sub-sequências de comprimento 1
+
+            for (long long int i = 1; i < k; ++i) { // olhar todas as sequencias com k -2 elementos
+                value = getValue(rank - 1, binaryIndexTree[i - 1]); // Recuperar todas as subssequencias de menor rank
+                update(rank, value, binaryIndexTree[i]); // Atualizar a arvore com subseqencias desse comprimento
+            }
+            result += value; //e somar todas as possiveis subsequencias desse rank
+        }
+        cout << result << endl;
+    }
+};
+
 const int N = 100000;
 int tree[2 * N];
 struct segtree
