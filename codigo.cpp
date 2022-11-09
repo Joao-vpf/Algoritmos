@@ -965,3 +965,47 @@ void findPostOrder(int pre[], int n)
  
     findPostOrderUtil(pre, n, INT_MIN, INT_MAX, preIndex);
 }
+
+
+
+//Fenwick fast
+ull n;
+ull jt[10000024];
+ull query(int id)
+{
+	ull res = 0;
+	for (;id; id = id - (id& -id)) // compara em bytes e acha o primeiro numero da direita para a esquerda
+	{
+		res+=jt[id];
+	} 
+	return res;
+	
+}
+
+void upd(int id, ull x)
+{
+	for (; id<=n; id=id+(id&-id))
+	{
+		jt[id]+=x;
+	}
+}
+
+
+ull query(int l , int r)
+{
+	return query(r) - (l?query(l-1):0);
+}
+
+void up(int id, int x)
+{
+	upd(id, x);//precisa comecar com id = 1
+}
+
+void upd(int l, int r, int x)
+{
+	upd(l,x);
+	//~ upd(x,l);
+	up(r+1,-x);
+}
+ios_base::sync_with_stdio(false);
+cin.tie(NULL);
