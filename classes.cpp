@@ -233,9 +233,7 @@ class fenwick_tree
 	void upd(int l, int r, int x)
 	{
 		upd(l,x);
-		upd(x,l);
-		up(r+1, x);
-		up(r, -x);
+		up(r+1, -x);
 	}
 };
 
