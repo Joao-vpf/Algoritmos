@@ -291,3 +291,67 @@ struct primosgold
         }
     }
 }
+
+//MST prims
+class Graph
+{
+    int V;
+    list< pair<int, int> > *adj;
+    map<pair<int,int>,int> tp;
+ 
+public:
+   Graph(int V)
+    {
+        this->V = V;
+        adj = new list<iPair> [V];
+    }
+ 
+    void addEdge(int u, int v, int w)
+    {
+        tp[{u,v}]=w;
+        tp[{v,u}]=w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+    
+ 
+    void primMST(int m)
+    {
+        priority_queue< iPair, vector <iPair> , greater<iPair> > pq;
+    
+        int src = 0; 
+        vector<int> key(V, INF); //pesos da mst
+        vector<int> parent(V, -1); //mst
+        vector<bool> inMST(V, false); //controle da mst
+        pq.push({0, src});
+        key[src] = 0;
+
+        while (!pq.empty())
+        {
+            int u = pq.top().second;
+            pq.pop();
+            if(inMST[u] == true){
+                continue;
+            }
+        
+            inMST[u] = true; 
+            for (auto e : adj[u])
+            {
+                int v = e.first;
+                int weight = e.second;
+                if (inMST[v] == false && key[v] > weight)
+                {
+                    key[v] = weight;
+                    pq.push(make_pair(key[v], v));
+                    parent[v] = u;
+                }
+            }
+        }
+	/*
+		manipula parent[i] - i
+		ou
+		key[i]
+	
+	*/
+    }
+};
