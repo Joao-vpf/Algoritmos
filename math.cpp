@@ -111,3 +111,33 @@ int factorTree(int N)
     // Return Answer
     return height;
 }
+//----------------Fatoração----------
+void sieve() //peneira de aristotales elimina todos que nao sao primos e ficando apenas os primos
+{
+    primes.clear();
+    bitset<1000001> isPrime;
+    isPrime.set();
+    isPrime[0] = isPrime[1] = false;
+    for(long long i=2;i<1000001;i++)
+    {
+        if(isPrime[i])
+        {
+            primes.push_back(i);
+            for(long long j=i*i;j<1000001;j+=i)
+                isPrime[j] = false;
+        }
+    }
+}
+
+vector<int> primeFactors(long long n, vector<int>& factors) {
+    long long PF_idx = 0, PF = primes[PF_idx];
+    while(PF * PF <= n) {
+        while(n % PF == 0) {
+            n /= PF;
+            factors.push_back(PF);
+        }
+        PF = primes[++PF_idx]; // next prime
+    }
+    if (n != 1) factors.push_back(n); // remaining num is a prime
+    return factors;
+}
