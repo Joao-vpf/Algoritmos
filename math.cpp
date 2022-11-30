@@ -39,10 +39,9 @@ void createFactorTree(struct Node **node_ref, int v)
     }
 }
  
-// Iterative method to find the height of Binary Tree
-void printLevelOrder(Node *root)
+//mostra todos os divisores do numero
+void printLevelOrder(Node *root) 
 {
-    // Base Case
     if (root == NULL)  return;
  
     queue<Node *> q;
@@ -50,8 +49,6 @@ void printLevelOrder(Node *root)
  
     while (q.empty() == false)
     {
-        // Print front of queue and remove
-        // it from queue
         Node *node = q.front();
         cout << node->key << " ";
         q.pop();
@@ -61,7 +58,20 @@ void printLevelOrder(Node *root)
             q.push(node->right);
     }
 }
-
+//mostra apenas divisores primos
+int printLevelOrder(Node *root, queue<int>& q)
+{
+    if(root)
+    {
+        int l=printLevelOrder(root->left, q);
+        int r=printLevelOrder(root->right, q);
+        if(l==r && r==0)
+        {
+            q.push(root->key);
+        }
+        return root->key;
+    }
+}
 createFactorTree(&root, val);//cria o node a partir do valor que voce quer
 printLevelOrder(root); //mostra os divisores
 
