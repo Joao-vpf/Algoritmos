@@ -1,79 +1,77 @@
 //Arvore de fatores de um numero
 
 // Tree node
-struct Node
+class Node
 {
-    struct Node *left, *right;
-    int key;
+    public:
+    Node *left;
+    Node *right;
+    long long key;
+    static Node* newNode(long long key)
+    {
+        Node* temp = new Node;
+        temp->key = key;
+        temp->left = temp->right = NULL;
+        return temp;
+    }
 };
- 
-// Utility function to create a new tree Node
-Node* newNode(int key)
+class Ftree
 {
-    Node* temp = new Node;
-    temp->key = key;
-    temp->left = temp->right = NULL;
-    return temp;
-}
- 
-// Constructs factor tree for given value and stores
-// root of tree at given reference.
-void createFactorTree(struct Node **node_ref, int v)
-{
-    (*node_ref) = newNode(v);
- 
-    // the number is factorized
-    for (int i = 2 ; i < v/2 ; i++)
+    Node* root;
+    void createFactorTree(Node **node_ref, long long v)
     {
-        if (v % i != 0)
-          continue;
- 
-        // If we found a factor, we construct left
-        // and right subtrees and return. Since we
-        // traverse factors starting from smaller
-        // to greater, left child will always have
-        // smaller factor
-        createFactorTree(&((*node_ref)->left), i);
-        createFactorTree(&((*node_ref)->right), v/i);
-        return;
-    }
-}
- 
-//mostra todos os divisores do numero
-void printLevelOrder(Node *root) 
-{
-    if (root == NULL)  return;
- 
-    queue<Node *> q;
-    q.push(root);
- 
-    while (q.empty() == false)
-    {
-        Node *node = q.front();
-        cout << node->key << " ";
-        q.pop();
-        if (node->left != NULL)
-            q.push(node->left);
-        if (node->right != NULL)
-            q.push(node->right);
-    }
-}
-//mostra apenas divisores primos
-int printLevelOrder(Node *root, queue<int>& q)
-{
-    if(root)
-    {
-        int l=printLevelOrder(root->left, q);
-        int r=printLevelOrder(root->right, q);
-        if(l==r && r==0)
+        (*node_ref) = Node::newNode(v);
+        for (int i = 2 ; i < v/2 ; i++)
         {
-            q.push(root->key);
+            if (v % i != 0)
+            continue;
+            createFactorTree(&((*node_ref)->left), i);
+            createFactorTree(&((*node_ref)->right), v/i);
+            return;
         }
-        return root->key;
     }
-}
-createFactorTree(&root, val);//cria o node a partir do valor que voce quer
-printLevelOrder(root); //mostra os divisores
+    
+    long long printLevelOrder(Node *root, queue<long long>& q) //alterando isso aqui pode mostrar a arvore
+    {
+        if(root)
+        {
+            long long l=printLevelOrder(root->left, q);
+            long long r=printLevelOrder(root->right, q);
+            if(l==r && r==0)
+            {
+                q.push(root->key);
+            }
+            return root->key;
+        }
+        return 0;
+    }
+    void dell(Node* root)
+    {
+        if(root)
+        {
+            dell(root->left);
+            dell(root->right);
+            delete root;
+        }
+    }
+    public:
+    Ftree()
+    {
+        Node* root = NULL;
+    }
+    void create (long long val)
+    {
+        createFactorTree(&root, val);
+    }
+    int print(queue<long long>& q)
+    {
+        return printLevelOrder(root, q); //root
+    }
+    ~Ftree()
+    {
+        dell(root);
+    }
+};
 
 //Acha a altura da arvore consequentimente a quantidade de fatores
 // Function to find the height of the
