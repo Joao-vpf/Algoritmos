@@ -325,6 +325,29 @@ void segmentedSieve(int n)
 
         }
  
+//Função Totiente Euler
+        
+int phi(int n)//verifica quantos numeros gcd o numero n tem
+{
+    int result = n;
+    for(int p = 2; p * p <= n; ++p)
+    {
+         
+        if (n % p == 0)
+        {
+             
+            while (n % p == 0)
+                n /= p;
+                 
+            result -= result / p;
+        }
+    }
+  
+    if (n > 1)
+        result -= result / n;
+         
+    return result;
+}
 
         // Numbers which are not marked as false are prime
 
