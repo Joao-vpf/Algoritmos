@@ -324,7 +324,25 @@ void segmentedSieve(int n)
                 mark[j-low] = false;
 
         }
+
+        // Numbers which are not marked as false are prime
+
+        for (int i = low; i<high; i++)
+
+            if (mark[i - low] == true)
+
+                cout << i << " ";
  
+
+        // Update low and high for next segment
+
+        low = low + limit;
+
+        high = high + limit;
+
+    }
+}
+
 //Função Totiente Euler
         
 int phi(int n)//verifica quantos numeros gcd o numero n tem
@@ -347,22 +365,4 @@ int phi(int n)//verifica quantos numeros gcd o numero n tem
         result -= result / n;
          
     return result;
-}
-
-        // Numbers which are not marked as false are prime
-
-        for (int i = low; i<high; i++)
-
-            if (mark[i - low] == true)
-
-                cout << i << " ";
- 
-
-        // Update low and high for next segment
-
-        low = low + limit;
-
-        high = high + limit;
-
-    }
 }
