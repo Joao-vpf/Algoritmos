@@ -112,7 +112,7 @@ int factorTree(int N)
     return height;
 }
 //----------------Fatoração----------
-void sieve() //peneira de aristotales elimina todos que nao sao primos e ficando apenas os primos
+void sieve() //peneira de eratóstenes elimina todos que nao sao primos e ficando apenas os primos
 {
     primes.clear();
     bitset<1000001> isPrime;
