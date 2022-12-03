@@ -366,3 +366,34 @@ int phi(int n)//verifica quantos numeros gcd o numero n tem
          
     return result;
 }
+//Primos determinantes
+
+    bool tred;
+    string x;
+    int cont=-1, l=0, maior=0;
+    map <int,pair<int,string>> dic; 
+    for(int i=1; i<primes.size() && primes[i]<32000; i++)
+    {
+        if(cont!=primes[i]-primes[i-1])
+        {
+            if(tred)
+            {
+                l++;
+                x+=to_string(primes[i-1]);
+                dic[primes[i-l]]={primes[i-1],x};
+            }
+            l=0;
+            x.clear();
+            cont=primes[i]-primes[i-1];
+            x=to_string(primes[i-1])+" ";
+            l++;
+            tred=false;
+        }
+        else
+        {
+            l++;
+            maior=primes[i];
+            x+=to_string(primes[i-1])+" ";
+            tred=true;
+        }
+    }
