@@ -397,3 +397,24 @@ int phi(int n)//verifica quantos numeros gcd o numero n tem
             tred=true;
         }
     }
+
+
+//-------------------Frações-------------------void fraction(int p, int q,vector<int>& a) 
+void fraction(int p, int q,vector<int>& a) //fração continua
+{
+    while(q)
+    {
+        a.push_back(p / q);
+        tie(p, q) = make_pair(q, p % q);
+    }
+}
+
+
+void fraction(int p, int q,vector<int>& a) 
+{
+    while(q)
+    {
+        a.push_back(p / q);
+        tie(p, q) = make_pair(q, p % q);
+    }
+}
