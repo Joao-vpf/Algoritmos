@@ -1,33 +1,12 @@
-string hextobin(string a)
+int busca_binaria(int vet[], int procurado, int inicio, int fim) //faz uma busca binaria
 {
-	bitset<4> bis;//bitset
-	string res;
-	for (char x : a)
-	{
-		x=toupper(x);//cctype
-		int b=x;
-		if (b<=int ('9'))
-		{
-			bis=b-48;
-			res+=bis.to_string();
-		}
-		else
-		{
-			bis=b-55;
-			res+=bis.to_string();
-		}
-	}
-	return res;
-}
-
-int s_int(string a) //String em inteiro
-{
-	int c=a.size()-1;
-	int y=0;
-	for (char x : a)
-	{
-		y+=(x-'0')*pow(10,c);
-		c--;
-	}
-	return y;
+    if (inicio==fim)
+    {
+        return (vet[inicio]==procurado ? inicio : -1);
+    }
+    if (vet[(inicio+fim)/2]<=procurado)
+    {
+       return busca_binaria(vet, procurado, ((inicio+fim)/2)+1, fim);
+    }
+       return busca_binaria(vet, procurado,inicio , ((inicio+fim)/2));
 }
