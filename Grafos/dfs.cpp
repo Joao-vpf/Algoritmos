@@ -9,3 +9,20 @@ void dfs(int x)
         }
     }
 }
+
+
+void dfs(int u) //dfs que analisa por adj
+{
+    queue <int> q;
+    q.push(u);
+    while (!q.empty())
+    {
+        int v = q.front();
+        q.pop();
+        vis[v]=false
+        for (auto e : adj[v])
+        {
+            q.push(e);
+        }
+    }
+}
