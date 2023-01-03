@@ -1,0 +1,14 @@
+int contador (int v) //conta quantos nodos estão conexos funciona melhor com nao dirigidos
+{
+    //v quantidade de nodos
+    int cont;
+    for (int j=0; j<v; j++)
+    {
+        if(!vis[j])
+        {   
+            dfs(j);
+            cont++;
+        }
+    }
+    return cont;
+}
