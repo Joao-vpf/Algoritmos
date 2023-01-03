@@ -1,3 +1,31 @@
+void bfs(int inicio, int fim) //estilo bfs "unidimensional" conta distancia
+{
+   for (int i=0; i<1000; i++)
+   {
+        dis[i]=-1;
+   }
+   dis[inicio]=0;
+   queue <int> q;
+   q.push(inicio);
+    while (q.size())
+    {
+        if (dis[fim]!=-1) //caso seja tenha muitos números
+        {  
+            break;
+        }
+        int u = q.front();
+        q.pop();
+        for (auto e : adj[u])
+        {
+            if (dis[e]==-1)
+            {
+                dis[e]=dis[u]+1;
+                q.push(e);
+            }
+        }
+    }
+}
+
 void bfs(int x, int pes) //peso diminui encontra limite
 {
 	dist[x]=pes;
@@ -17,3 +45,5 @@ void bfs(int x, int pes) //peso diminui encontra limite
 		}
 	}
 }
+
+
