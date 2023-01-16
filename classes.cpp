@@ -478,3 +478,72 @@ public:
         }
     }
 };
+
+//Intervalo de multiplicação
+
+
+
+int const n=10;
+int const tt=log2(n);
+
+class aaaaa
+{
+	public:
+	int st[tt][n];
+	void build(int a[])
+	{
+		for(int i=0; i<n; i++)
+		{
+			st[0][i]=a[i];
+		}
+		
+		for(int i=1; i<log2(n); i++)
+		{
+			for(int j=0; j+(1<<i)<n; j++)
+			{
+				st[i][j]=st[i-1][j]+st[i-1][j+(1<<i)];
+			}
+		}
+	}
+	
+	void buildcria(int a[])
+	{
+		for(int i=0; i<n; i++)
+		{
+			st[0][i]=a[i];
+		}
+		
+		for(int i=0; (1<<i)<n; i++)
+		{
+			int *v=st[i];
+			for(int s=1; s*(1<<i)<=n; s+=2)
+			{
+				int k=s*(1<<i);
+				v[k]=a[k];
+				v[k-1]=a[k-1];
+				for(int j=1; (1<<j)<i; j++)
+				{
+					v[k+j]=v[k+j-1] +a[k+j];
+					v[k-j-1]=v[k-j] + a[k-j-1];
+				}
+			}
+		}
+		
+	}
+	
+	int querycria(int l, int r)
+	{
+		if(l==r) return st[0][l];
+		int k = log2(r-l);
+		return st[k][l]+st[k][r];
+	}
+	
+	int query(int l, int r)
+	{
+		if(l==r) return st[0][l];
+		int len=r-l+1;
+		int k = log2(len);
+		return st[k][l]+st[k][r-(1<<k)];
+	}
+	
+};
