@@ -37,7 +37,7 @@ void remove(string s)
 	trie[u].world=false;
 }
 
-int go(int u,int c)
+int go(int u,char c)
 {
     if(!trie[u].go.count(c))
     {
