@@ -383,7 +383,40 @@ int phi(unsigned int n)
     return result;
 }
 
+#define ll long long int
 
+const int mx=1e6+1; //10^6+1
+
+ll phi[mx];
+ll lcm[mx];
+//soma de todos
+void totient_sieve()
+{
+    for(int i=1;i<mx;i++)
+    {
+        phi[i]=i;
+    }
+    for(int p=2;p<mx;p++)
+    {
+        if(phi[p]==p)
+        {
+            phi[p]=p-1;
+            for(int i=2*p;i<mx;i=i+p)
+            {
+                phi[i]=(phi[i]/p)*(p-1);
+            }
+        }
+    }
+}
+
+
+    for(int i=1;i<mx;i++)
+     {
+        for(int j=i;j<mx;j=j+i)
+        {
+            lcm[j]+=(i*phi[i]);
+        }
+    }
 
 //Primos determinantes
 
