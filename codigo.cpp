@@ -1123,3 +1123,104 @@ class aaaaa
 	
 }; 
 
+
+//Mo
+#include <bits/stdc++.h>
+using namespace std;
+
+int BLOCK_SIZE;
+
+struct query {
+	int l, r, idx;
+};
+//comparador dos blocos
+bool comparator(query a, query b)
+{
+	if ((a.l / BLOCK_SIZE) != (b.l / BLOCK_SIZE))
+		return (a.l / BLOCK_SIZE) < (b.l / BLOCK_SIZE);
+
+	return ((a.l / BLOCK_SIZE) & 1) ? (a.r < b.r)
+									: (a.r > b.r);
+}
+
+void expand(int idx, int* arr, map<int, int>& numFreq,set<pair<int, int> >& freqNum)
+{
+	freqNum.erase({ numFreq[arr[idx]], arr[idx] });
+
+	++numFreq[arr[idx]];
+
+	freqNum.insert({ numFreq[arr[idx]], arr[idx] });
+}
+//estudar
+void shrink(int idx, int* arr, map<int, int>& numFreq,set<pair<int, int> >& freqNum)
+{
+	freqNum.erase({ numFreq[arr[idx]], arr[idx] });
+
+	--numFreq[arr[idx]];
+
+	freqNum.insert({ numFreq[arr[idx]], arr[idx] });
+}
+
+// igual a do bruno
+pair<int, int>
+sqrtDecomposition(int& L, int& R, int l, int r, int* arr,set<pair<int, int> >& freqNum,map<int, int>& numFreq)
+{
+	while (L > l) {
+		--L;
+		expand(L, arr, numFreq, freqNum);
+	}
+
+	while (R < r) {
+		++R;
+		expand(R, arr, numFreq, freqNum);
+	}
+
+	while (L < l) {
+		shrink(L, arr, numFreq, freqNum);
+		++L;
+	}
+
+	while (R > r) {
+		shrink(R, arr, numFreq, freqNum);
+		--R;
+	}
+
+	pair<int, int> last = *prev(freqNum.end());
+
+	return last;
+}
+void getMaxOccuringElement(int arr[], int N, int M,pair<int, int> Q[])
+{
+
+	BLOCK_SIZE = (int)sqrt(N + .0) + 1;
+
+	query queries[M];
+
+	for (int i = 0; i < M; ++i) {
+		queries[i].l = Q[i].first;
+		queries[i].r = Q[i].second;
+		queries[i].idx = i;
+	}
+//ordena a query para n gastar tanto tempo
+	sort(queries, queries + M, comparator);
+
+	int L = 0, R = -1;
+
+	pair<int, int> ans[M];
+
+	set<pair<int, int> > freqNum;
+	map<int, int> numFreq;
+
+	for (int i = 0; i < M; ++i) {
+
+		int l = queries[i].l;
+		int r = queries[i].r;
+		ans[queries[i].idx] = sqrtDecomposition(
+			L, R, l, r, arr, freqNum, numFreq);
+	}
+	for (int i = 0; i < M; ++i) 
+    {
+        cout << ans[i].first<< "\n";
+	}
+}
+
