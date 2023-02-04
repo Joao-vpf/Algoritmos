@@ -112,6 +112,25 @@ int factorTree(int N)
     return height;
 }
 //----------------Fatoração----------
+vector<bool> isPrime(1121, true);
+vector<int> primes;
+void sieve() //peneira de eratóstenes elimina todos que nao sao primos e ficando apenas os primos
+{
+    primes.pb(2);
+    isPrime[0] = isPrime[1] = false;
+    for(int i=3;i<1121;i+=2)
+    {
+        if(isPrime[i])
+        {
+            primes.pb(i);
+            for(int j=i*i;j<1121;j+=i)
+                isPrime[j] = false;
+        }
+    }
+}
+
+
+
 void sieve() //peneira de eratóstenes elimina todos que nao sao primos e ficando apenas os primos
 {
     primes.clear();
