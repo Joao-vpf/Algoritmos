@@ -385,6 +385,17 @@ int phi(int n)//verifica quantos numeros gcd o numero n tem
          
     return result;
 }
+//gcd n recursivo
+int gcd(int x, int y) {
+    if(!x)  return y;
+    if(!y)  return x;
+    int t;
+    while(x%y) {
+        t = x, x = y, y = t%y;
+    }
+    return y;
+}
+
 //log2(o)
 int gcd(int a, int b)
 {
