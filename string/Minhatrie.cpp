@@ -25,6 +25,25 @@ class Trie
     private:
         TrieNode* root;
 
+    void findWordsWithSubstringRecursive(TrieNode* node, string prefix, vector<string>& results, string x) 
+    {//percorre todos os nodes e salva no results palavras que contem x
+        if (node->isEndOfWord) 
+        {
+            if(prefix.find(x)!=string::npos)
+            { 
+                results.push_back(prefix);
+            }
+        }
+        for (int i = 0; i < 26; i++) 
+        {
+            if (node->children[i] != nullptr) 
+            {
+                char c = 'a' + i;
+                findWordsWithSubstringRecursive(node->children[i], prefix+c,  results, x) ;
+            }
+        }
+    }
+    
     bool removeRecursive(TrieNode* node, string word, int pos) 
     {
         if (pos == word.size()) 
@@ -114,6 +133,11 @@ class Trie
             return true; 
         }
         return false;
+    }
+
+   void findSubstring(string x, vector<string>& results) 
+    {//metodo para procurar na trie (todas os nodes) se tem x contido em alguma palavra
+        findWordsWithSubstringRecursive(root,"" ,results, x);
     }
 };
 
