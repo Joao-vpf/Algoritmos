@@ -180,30 +180,6 @@ class AhoCorasick
         }
         return trie[nodeID]->isEnd;
     }
-    
-    // Busca por todas as ocorrências das palavras da trie em um texto
-    vector<pair<int, int>> findAll(const string& text)
-    {// O(n + z), onde n é o comprimento do texto e z é o número de ocorrências de palavras no texto.
-        vector<pair<int, int>> occs;
-        int nodeID = 0;
-        int size = text.size();
-        for (int i = 0; i < size; i++) 
-        {
-            while (nodeID != 0 && !trie[nodeID]->children.count(text[i])) 
-            {
-                nodeID = trie[nodeID]->link;
-            }
-            if (trie[nodeID]->children.count(text[i])) 
-            {
-                nodeID = trie[nodeID]->children[text[i]];
-            }
-            for (int wordID : trie[nodeID]->matchedIDs) 
-            {
-                occs.push_back({i - words[wordID].length() + 1, wordID});
-            }
-        }
-        return occs;
-    }
 
     // Busca pela primeira ocorrência de uma palavra da trie em um texto
     pair<int, int> findFirst(const string& text)
