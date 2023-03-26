@@ -21,11 +21,11 @@ struct Node
 };
 
 class AhoCorasick
-{//O()
+{/*Tamanho constante K, então a complexidade da Trie é O(NK), onde N é o número total de palavras armazenadas na Trie.*/
     vector<Node*> trie;
     // Constrói a função de falha
     void buildFailureFunction() 
-    {
+    {//O(N * L), onde N é o número de palavras no dicionário e L é o comprimento da maior palavra.
         queue<int> q;
         q.push(0);//posição do root no vetor
         while (!q.empty()) 
@@ -73,7 +73,7 @@ class AhoCorasick
     vector<string> words;// nao pode mudar
     // Constrói a trie a partir do vetor de palavras
    void buildTrie(vector<string>& a)
-    {
+    {//O(N * L), onde N é o número de palavras no dicionário e L é o comprimento da maior palavra.
         words=a;
         trie.push_back(new Node);
         int nextID = 1;
@@ -167,7 +167,7 @@ class AhoCorasick
 
     // Busca por uma palavra na trie
     bool search(const string& word) 
-    {
+    {// O(m), onde m é o comprimento da palavra sendo buscada.
         int nodeID = 0;
         for (char c : word) 
         {
@@ -183,7 +183,7 @@ class AhoCorasick
     
     // Busca por todas as ocorrências das palavras da trie em um texto
     vector<pair<int, int>> findAll(const string& text)
-    {
+    {// O(n + z), onde n é o comprimento do texto e z é o número de ocorrências de palavras no texto.
         vector<pair<int, int>> occs;
         int nodeID = 0;
         int size = text.size();
@@ -208,6 +208,7 @@ class AhoCorasick
     // Busca pela primeira ocorrência de uma palavra da trie em um texto
     pair<int, int> findFirst(const string& text)
     {//pair<qual palavra do dicionario, onde terminou>
+    //O(n), onde n é o comprimento do texto em que a palavra está sendo buscada
         int nodeID = 0;
         int size = text.size();
         for (int i = 0; i < size; i++) 
