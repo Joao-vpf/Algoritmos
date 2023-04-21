@@ -160,6 +160,28 @@ vector<int> primeFactors(long long n, vector<int>& factors) {
     if (n != 1) factors.push_back(n); // remaining num is a prime
     return factors;
 }
+//------------Legendre--------------------
+map<int,int> fac;
+//acha se um numero n! é divisivel por x
+bool legendre(int fat)
+{
+    //Teorema de Legendre
+    for(auto e  : fac)
+    {
+        int k=e.fr*e.fr, ant=e.fr, res=0;
+        res+=fat/e.fr;
+        for(int i=1; i<e.sd && ant<k && res<e.sd; i++)
+        {  
+            res+=fat/k;
+            ant=k;
+            k*=e.fr;
+        }
+       // cout << e.fr << " " << e.sd << " " << res << endl;
+        if(res<e.sd) return false;
+    }
+    return true;
+}
+
 
 //----------Maior divisor prim-------------------
 long long maxPrimeFactors(long long n)
