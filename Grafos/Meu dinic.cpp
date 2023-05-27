@@ -65,3 +65,16 @@ int dfs(int u, int sink, int flow)
 
     return 0;
 }
+int dinic(int source, int sink) 
+{
+    int maxFlow = 0;
+
+    while (bfs(source, sink)) 
+    {
+        int flow;
+        while ((flow = dfs(source, sink, INT_MAX)) > 0)
+            maxFlow += flow;
+    }
+
+    return maxFlow;
+}
