@@ -282,6 +282,3 @@ int main() {
 
     return 0;
 }
-```
-
-Essa implementação básica da Treap Lazy em C++ permite atualizar, somar, inserir e remover valores em um intervalo específico da Treap. Note que é uma implementação simplificada e pode ser aprimorada para diferentes casos de uso e requisitos específicos.
