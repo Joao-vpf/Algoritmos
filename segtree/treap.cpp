@@ -269,16 +269,3 @@ public:
         merge(root, leftNode, rightNode);
     }
 };
-
-int main() {
-    Treap treap;
-    treap.insertRange(1, 5, 10);
-    treap.updateRange(2, 4, 5);
-    int sum = treap.sumRange(1, 5);
-    cout << "Sum: " << sum << endl;
-    treap.removeRange(2, 3);
-    sum = treap.sumRange(1, 5);
-    cout << "Sum after removal: " << sum << endl;
-
-    return 0;
-}
