@@ -138,241 +138,150 @@ struct treap
 };
 
 
-
-struct Node 
-{
-    int key, priority;
+struct Node {
+    int key;
+    int priority;
     int sum;
     int lazy;
-    Node *left, *right;
+    Node* left;
+    Node* right;
 
-    Node(int k) : key(k), priority(RANDOM()), sum(k), lazy(0), left(nullptr), right(nullptr) {}
+    Node(int k) : key(k), priority(rand()), sum(k), lazy(0), left(NULL), right(NULL) {}
 };
 
-class treap 
-{
+class Treap {
 private:
-    Node *root;
+    Node* root;
 
-    int getSum(Node* node) 
-    {
-        return node ? node->sum : 0;
+    int getSum(Node* node) {
+        return node ? node->sum + (node->lazy * (node->right - node->left + 1)) : 0;
     }
 
-    void updateSum(Node* node) 
-    {
-		
-        if (node) 
-        {
-            node->sum = node->key + getSum(node->left) + getSum(node->right);
+    void updateSum(Node* node) {
+        if (node) {
+            node->sum = getSum(node->left) + getSum(node->right) + node->key;
         }
     }
 
-    void propagateLazy(Node* node) 
-    {
-        if (node->left) 
-        {
-            node->left->lazy += node->lazy;
-            node->left->key += node->lazy;
-            node->left->sum += getSum(node->left) * node->lazy;
+    void updateLazy(Node* node, int lazy) {
+        if (node) {
+            node->sum += lazy * (node->right - node->left + 1);
+            node->lazy += lazy;
         }
-
-        if (node->right) 
-        {
-            node->right->lazy += node->lazy;
-            node->right->key += node->lazy;
-            node->right->sum += getSum(node->right) * node->lazy;
-        }
-        node->lazy = 0;
     }
 
-    void split(Node* current, int key, Node*& left, Node*& right) 
-    {
-        if (!current) 
-        {
-            left = right = nullptr;
-        } 
-        else 
-        {
-            propagateLazy(current);
-            if (key < current->key) 
-            {
-                split(current->left, key, left, current->left);
-                right = current;
-            } 
-            else 
-            {
-                split(current->right, key, current->right, right);
-                left = current;
+    void propagateLazy(Node* node) {
+        if (node && node->lazy != 0) {
+            updateLazy(node->left, node->lazy);
+            updateLazy(node->right, node->lazy);
+            node->lazy = 0;
+        }
+    }
+
+    void split(Node* node, int key, Node*& left, Node*& right) {
+        if (!node) {
+            left = right = NULL;
+        } else {
+            propagateLazy(node);
+            if (node->key <= key) {
+                split(node->right, key, node->right, right);
+                left = node;
+            } else {
+                split(node->left, key, left, node->left);
+                right = node;
             }
+            updateSum(node);
         }
-
-        updateSum(current);
     }
 
-    void merge(Node*& current, Node* left, Node* right) 
-    {
-        if (!left || !right) 
-        {
-            current = left ? left : right;
-        } 
-        else 
-        {
-            propagateLazy(left);
-            propagateLazy(right);
-            if (left->priority > right->priority) 
-            {
-                merge(left->right, left->right, right);
-                current = left;
-            } 
-            else 
-            {
-                merge(right->left, left, right->left);
-                current = right;
-            }
+    void merge(Node*& node, Node* left, Node* right) {
+        propagateLazy(left);
+        propagateLazy(right);
+        if (!left || !right) {
+            node = left ? left : right;
+        } else if (left->priority > right->priority) {
+            merge(left->right, left->right, right);
+            node = left;
+        } else {
+            merge(right->left, left, right->left);
+            node = right;
         }
-
-        updateSum(current);
+        updateSum(node);
     }
 
-    void insert(Node*& current, Node* newNode) 
-    {
-        if (!current) {
-            current = newNode;
-        } 
-        else 
-        {
-            propagateLazy(current);
-
-            if (newNode->priority > current->priority) 
-            {
-                split(current, newNode->key, newNode->left, newNode->right);
-                current = newNode;
-            } 
-            else 
-            {
-                insert(newNode->key < current->key ? current->left : current->right, newNode);
-            }
+    void insert(Node*& node, Node* newNode) {
+        if (!node) {
+            node = newNode;
+        } else if (newNode->priority > node->priority) {
+            split(node, newNode->key, newNode->left, newNode->right);
+            node = newNode;
+        } else {
+            insert(newNode->key <= node->key ? node->left : node->right, newNode);
         }
-
-        updateSum(current);
+        updateSum(node);
     }
 
-    void erase(Node*& current, int key) 
-    {
-        if (!current) 
-        {
+    void remove(Node*& node, int key) {
+        if (!node) {
             return;
-        } 
-        else 
-        {
-            propagateLazy(current);
-
-            if (current->key == key) 
-            {
-                Node* temp = current;
-                merge(current, current->left, current->right);
-                delete temp;
-            } 
-            else 
-            {
-                erase(key < current->key ? current->left : current->right, key);
-            }
+        } else if (node->key == key) {
+            Node* temp = node;
+            merge(node, node->left, node->right);
+            delete temp;
+        } else {
+            remove(key < node->key ? node->left : node->right, key);
         }
-
-        updateSum(current);
-    }
-
-    void updateRange(Node*& current, int l, int r, int val) 
-    {
-        if (!current) 
-        {
-            return;
-        }
-
-        propagateLazy(current);
-
-        if (current->key >= l && current->key <= r) 
-        {
-            current->key += val;
-            current->sum += getSum(current) * val;
-
-            if (current->left) 
-            {
-                current->left->lazy += val;
-                current->left->key += val;
-                current->left->sum += getSum(current->left) * val;
-            }
-
-            if (current->right) 
-            {
-                current->right->lazy += val;
-                current->right->key += val;
-                current->right->sum += getSum(current->right) * val;
-            }
-        } 
-        else 
-		{
-			if (current->key < l) 
-			{
-				updateRange(current->right, l, r, val);
-			} 
-			else 
-			{
-				updateRange(current->left, l, r, val);
-			}
-		}
-
-        updateSum(current);
-    }
-
-    int sumRange(Node*& current, int l, int r) 
-    {
-        if (!current) 
-        {
-            return 0;
-        }
-
-        propagateLazy(current);
-
-        if (current->key >= l && current->key <= r) 
-        {
-            return current->key + getSum(current->left) + getSum(current->right);
-        } 
-        if (current->key < l) 
-        {
-            return sumRange(current->right, l, r);
-        }  
-         return sumRange(current->left, l, r);
+        updateSum(node);
     }
 
 public:
-    treap() : root(nullptr) {}
-
-    void insert(int key) 
-    {
-        Node* newNode = new Node(key);
-        insert(root, newNode);
+    void updateRange(int left, int right, int value) {
+        Node* leftNode, *middleNode, *rightNode;
+        split(root, left - 1, leftNode, middleNode);
+        split(middleNode, right, middleNode, rightNode);
+        updateLazy(middleNode, value);
+        merge(middleNode, middleNode, rightNode);
+        merge(root, leftNode, middleNode);
     }
 
-    void update(int oldKey, int newKey) 
-    {
-        erase(root, oldKey);
-        insert(newKey);
+    int sumRange(int left, int right) {
+        Node* leftNode, *middleNode, *rightNode;
+        split(root, left - 1, leftNode, middleNode);
+        split(middleNode, right, middleNode, rightNode);
+        int result = getSum(middleNode);
+        merge(middleNode, middleNode, rightNode);
+        merge(root, leftNode, middleNode);
+        return result;
     }
 
-    void erase(int key) 
-    {
-        erase(root, key);
+    void insertRange(int left, int right, int value) {
+        Node* leftNode, *rightNode;
+        split(root, left - 1, leftNode, rightNode);
+        Node* newNode = new Node(value);
+        merge(leftNode, leftNode, newNode);
+        merge(root, leftNode, rightNode);
     }
 
-    void updateRange(int l, int r, int val) 
-    {
-        updateRange(root, l, r, val);
-    }
-
-    int sumRange(int l, int r) 
-    {
-        return sumRange(root, l, r);
+    void removeRange(int left, int right) {
+        Node* leftNode, *middleNode, *rightNode;
+        split(root, left - 1, leftNode, middleNode);
+        split(middleNode, right, middleNode, rightNode);
+        merge(root, leftNode, rightNode);
     }
 };
+
+int main() {
+    Treap treap;
+    treap.insertRange(1, 5, 10);
+    treap.updateRange(2, 4, 5);
+    int sum = treap.sumRange(1, 5);
+    cout << "Sum: " << sum << endl;
+    treap.removeRange(2, 3);
+    sum = treap.sumRange(1, 5);
+    cout << "Sum after removal: " << sum << endl;
+
+    return 0;
+}
+```
+
+Essa implementação básica da Treap Lazy em C++ permite atualizar, somar, inserir e remover valores em um intervalo específico da Treap. Note que é uma implementação simplificada e pode ser aprimorada para diferentes casos de uso e requisitos específicos.
