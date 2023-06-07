@@ -98,7 +98,7 @@ struct treap
 	{
 		item l, r;
 		split(root, l, r, i);
-		split(r, root, r, j-i-1);
+		split(r, root, r, j-i+1);
 		operation();
 		merge(root, l, root);
 		merge(root, root, r);
