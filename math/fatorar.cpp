@@ -183,3 +183,28 @@ void fraction(int p, int q,vector<int>& a)
     }
 }
 
+//----------------------Prime factor-----------------
+ll primeFactors(int n) //conta os fatores de um numero O(Sqrt(n))
+{ 
+    ll cont=0;
+    while (n%2 == 0) 
+    { 
+        cont++;
+        n = n/2; 
+    } 
+
+    for (int i = 3; i <= sqrt(n); i = i+2) 
+    {  
+        while (n%i == 0) 
+        { 
+            cont++;
+            n = n/i; 
+        } 
+    } 
+
+    if (n > 2) 
+        cont++;
+
+    return cont;
+} 
+
