@@ -1,11 +1,10 @@
 // Complexidade: O(log p)
 
-template <typename T>
-T fastPow(T a, T p) {
+long long fastPow(long long a, long long p) {
     if (p == 0)
         return 1;
 
-    T res = 1;
+    long long res = 1;
 
     while (p > 0) {
         if (p & 1) // Se o bit menos significativo de p é 1
@@ -17,7 +16,6 @@ T fastPow(T a, T p) {
 
     return res;
 }
-
 // Complexidade: O(log p)
 
 template <typename T>
