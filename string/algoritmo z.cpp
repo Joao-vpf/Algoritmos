@@ -1,3 +1,4 @@
+
 const int maxn = (10e5)*5;
 int z[maxn];
 int n;
@@ -6,6 +7,7 @@ void z_algorithm(string& s)
 {
     n = s.length();
     int l = 0, r = 0;
+	memset(z, 0, maxn-1);
     for (int i = 1; i < n; i++) 
     {
         // Se i estiver dentro da janela [l, r], pode-se aproveitar os valores já calculados
