@@ -1,7 +1,8 @@
 int lcs(string a,string b)
 {
-  int n = a.size();
-  int m = b.size();
+	int n = a.size();
+	int m = b.size();
+	vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
 	for(int i=1; i<=n; i++)
 	{
 		string r;
@@ -17,4 +18,5 @@ int lcs(string a,string b)
 			}
 		}
 	}
+	return dp[n][m];
 }
