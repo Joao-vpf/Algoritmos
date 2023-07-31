@@ -1,7 +1,6 @@
+const int MAXN = 100005; 
 
-const int MAXN = 100005; // Tamanho máximo da árvore
-
-vector<int> adj[MAXN]; // Lista de adjacências da árvore
+vector<int> adj[MAXN];
 int parent[MAXN][20]; // Matriz de ancestrais (20 é o valor máximo para log2(MAXN))
 
 void dfs(int u, int par) 
