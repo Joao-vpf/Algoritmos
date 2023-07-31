@@ -60,3 +60,13 @@ int lca(int u, int v)
 
     return parent[u][0];
 }
+
+//inicialização
+for (int i = 1; i <= n; i++) 
+{
+    adj[i].clear();
+    for (int j = 0; j < 20; j++) 
+    {
+        parent[i][j] = -1;
+    }
+}
