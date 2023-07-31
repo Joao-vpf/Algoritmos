@@ -9,10 +9,6 @@ void bfs(int inicio, int fim) //estilo bfs "unidimensional" conta distancia
    q.push(inicio);
     while (q.size())
     {
-        if (dis[fim]!=-1) //caso seja tenha muitos números
-        {  
-            break;
-        }
         int u = q.front();
         q.pop();
         for (auto e : adj[u])
