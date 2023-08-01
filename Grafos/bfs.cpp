@@ -42,4 +42,25 @@ void bfs(int x, int pes) //peso diminui encontra limite
 	}
 }
 
-
+int bfs(int inicio) //acha extremidade
+{
+   dis[inicio]=0;
+   queue <int> q;
+   q.push(inicio);
+int last=-1;
+    while (q.size())
+    {
+        int u = q.front();
+        q.pop();
+	    last =u;
+        for (auto e : adj[u])
+        {
+            if (dis[e]==-1)
+            {
+                dis[e]=dis[u]+1;
+                q.push(e);
+            }
+        }
+    }
+	return last;
+}
