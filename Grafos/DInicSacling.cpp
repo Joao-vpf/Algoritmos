@@ -1,83 +1,109 @@
-struct DinicScaling {
-    const long long flow_inf = 1e18;
-    vector<FlowEdge> edges;
-    vector<vector<int>> adj;
-    int n, m = 0;
-    int s, t;
-    vector<int> level, ptr;
-    queue<int> q;
-    int max_level;
 
-    DinicScaling(int n, int s, int t) : n(n), s(s), t(t) {
-        adj.resize(n);
-        level.resize(n);
-        ptr.resize(n);
-        max_level = n;
-    }
-
-    void add_edge(int v, int u, long long cap) {
-        edges.emplace_back(v, u, cap);
-        edges.emplace_back(u, v, 0);
-        adj[v].push_back(m);
-        adj[u].push_back(m + 1);
-        m += 2;
-    }
-
-    bool bfs() {
-        while (!q.empty()) {
-            int v = q.front();
-            q.pop();
-            for (int id : adj[v]) {
-                if (edges[id].cap - edges[id].flow < 1)
-                    continue;
-                if (level[edges[id].u] != -1)
-                    continue;
-                level[edges[id].u] = level[v] + 1;
-                if (edges[id].u == t)
-                    return true;
-                q.push(edges[id].u);
-            }
-        }
-        return false;
-    }
-
-    long long dfs(int v, long long pushed) {
-        if (pushed == 0 || v == t)
-            return pushed;
-
-        for (int& cid = ptr[v]; cid < (int)adj[v].size(); cid++) {
-            int id = adj[v][cid];
-            int u = edges[id].u;
-            if (level[v] + 1 != level[u] || edges[id].cap - edges[id].flow < 1)
-                continue;
-            long long tr = dfs(u, min(pushed, edges[id].cap - edges[id].flow));
-            if (tr == 0)
-                continue;
-            edges[id].flow += tr;
-            edges[id ^ 1].flow -= tr;
-            return tr;
-        }
-        return 0;
-    }
-
-    long long flow() {
-        long long f = 0;
-        for (long long d = 1LL << 30; d >= 1; d >>= 1) {
-            while (true) {
-                fill(level.begin(), level.end(), -1);
-                level[s] = 0;
-                q.push(s);
-                if (!bfs())
-                    break;
-                fill(ptr.begin(), ptr.end(), 0);
-                while (long long pushed = dfs(s, flow_inf)) {
-                    f += pushed;
-                }
-            }
-            max_level = level[t];
-            if (max_level < 0)
-                break;
-        }
-        return f;
-    }
+struct edge {
+    int a, b, f, c;
 };
+
+const int inf = 1000 * 1000 * 1000;
+const int MAXN = 1050;
+
+int n, m;
+vector <edge> e;
+int pt[MAXN]; // very important performance trick
+vector <int> g[MAXN];
+long long flow = 0;
+queue <int> q;
+int d[MAXN];
+int lim;
+int s, t;
+
+void add_edge(int a, int b, int c) {                                                                           
+    edge ed;
+
+    //keep edges in vector: e[ind] - direct edge, e[ind ^ 1] - back edge 
+
+    ed.a = a; ed.b = b; ed.f = 0; ed.c = c;
+    g[a].push_back(e.size());
+    e.push_back(ed);
+
+    ed.a = b; ed.b = a; ed.f = c; ed.c = c;
+    g[b].push_back(e.size());
+    e.push_back(ed);
+}
+
+bool bfs() {
+    for (int i = s; i <= t; i++)
+        d[i] = inf;
+    d[s] = 0; 
+    q.push(s);
+    while (!q.empty() && d[t] == inf) {
+        int cur = q.front(); q.pop();
+        for (size_t i = 0; i < g[cur].size(); i++) {
+            int id = g[cur][i];
+            int to = e[id].b;
+
+            //printf("cur = %d id = %d a = %d b = %d f = %d c = %d\n", cur, id, e[id].a, e[id].b, e[id].f, e[id].c);
+
+            if (d[to] == inf && e[id].c - e[id].f >= lim) {
+                d[to] = d[cur] + 1;
+                q.push(to);
+            }
+        }
+    }
+    while (!q.empty()) 
+        q.pop();
+    return d[t] != inf;
+}
+
+bool dfs(int v, int flow) {
+    if (flow == 0) 
+        return false;
+    if (v == t) {
+        //cout << v << endl;
+        return true;
+    }
+    for (; pt[v] < g[v].size(); pt[v]++) {
+        int id = g[v][pt[v]];
+        int to = e[id].b;
+
+        //printf("v = %d id = %d a = %d b = %d f = %d c = %d\n", v, id, e[id].a, e[id].b, e[id].f, e[id].c);
+
+        if (d[to] == d[v] + 1 && e[id].c - e[id].f >= flow) {
+            int pushed = dfs(to, flow); 
+            if (pushed) {
+                
+                //da para recuperar o caminho por aqui
+                
+                e[id].f += flow;
+                e[id ^ 1].f -= flow;
+                return true;
+            }               
+        }
+    }
+    return false;
+}
+
+void dinic() {
+    for (lim = (1 << 30); lim >= 1;) {
+        if (!bfs()) {
+            lim >>= 1;
+            continue;
+        }
+
+        for (int i = s; i <= t; i++) 
+            pt[i] = 0;
+
+        int pushed;
+
+        while (pushed = dfs(s, lim)) { 
+            flow = flow + lim;
+        }
+
+        //cout << flow << endl;
+    }
+}
+//NA main:
+
+s = 1; t = n;
+dinic();
+
+cout << flow << endl;
