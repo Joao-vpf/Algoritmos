@@ -45,4 +45,27 @@ int fy[]={0,0,1,-1};
 int fx[]={0,0,1,-1,-1,1,-1,1};
 int fy[]={-1,1,0,0,1,1,-1,-1};
 */
+
+
+ 
+int main()
+{
+	ios
+	//freop
+}
+ 
+ 
+/*
+int main()
+{
+	int n = rand()%1000;
+	cout << n <<endl;
+	for(int i=0; i<n; i++)
+	{
+		cout << rand%100 << " ";
+	}
+	cout<<endl;
+}
+*/ 
+
  
