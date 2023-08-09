@@ -137,23 +137,23 @@ class LinkCut
     {   delete[] x;
     }
 
-    void link(int u, int v)
+    void link(int u, int v)// make the tree rooted at u a subtree of v;
     {   ::link(&x[u], &x[v]);
     }
 
-    void cut(int u)
+    void cut(int u)//remove the edge connecting u to its parent.
     {   ::cut(&x[u]);
     }
 
-    int root(int u)
+    int root(int u)// find the root of the tree containing u
     {   return ::root(&x[u])->label;
     }
 
-    int depth(int u)
+    int depth(int u)// depth of u in its tree
     {   return ::depth(&x[u]);
     }
 
-    int lca(int u, int v)
+    int lca(int u, int v)//lowest common ancestor of u and v 
     {   return ::lca(&x[u], &x[v])->label;
     }
 };
