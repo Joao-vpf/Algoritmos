@@ -1,30 +1,39 @@
-struct Node {
+
+struct Node 
+{
   int fa, ch[2];
 };
 
-class LinkCutTree {
+class LinkCutTree 
+{
  public:
-  LinkCutTree(int n) : s(n + 1) {
-    for (int i = 1; i <= n; ++i) {
+  LinkCutTree(int n) : s(n + 1) 
+  {
+    for (int i = 1; i <= n; ++i) 
+    {
       s[i].fa = s[i].ch[0] = s[i].ch[1] = 0;
     }
   }
 
-  void link(int u, int v) {
+  void link(int u, int v) 
+  {
     make_root(u);
     s[u].ch[1] = v;
     s[v].fa = u;
   }
 
-  void cut(int u, int v) {
+  void cut(int u, int v) 
+  {
     access(u);
     make_root(v);
     s[v].fa = s[u].ch[1] = 0;
   }
 
-  int find_root(int u) {
+  int find_root(int u)
+  {
     access(u);
-    while (s[u].ch[0]) {
+    while (s[u].ch[0]) 
+    {
       u = s[u].ch[0];
     }
     splay(u);
@@ -34,7 +43,8 @@ class LinkCutTree {
  private:
   std::vector<Node> s;
 
-  void rotate(int x) {
+  void rotate(int x) 
+  {
     int y = s[x].fa;
     int z = s[y].fa;
     int k = (s[y].ch[1] == x);
@@ -46,8 +56,10 @@ class LinkCutTree {
     if (z) s[z].ch[s[z].ch[1] == y] = x;
   }
 
-  void splay(int x) {
-    while (s[x].fa) {
+  void splay(int x) 
+  {
+    while (s[x].fa) 
+    {
       int y = s[x].fa;
       int z = s[y].fa;
       if (z) {
@@ -58,9 +70,11 @@ class LinkCutTree {
     }
   }
 
-  void access(int u) {
+  void access(int u) 
+  {
     int v = 0;
-    while (u) {
+    while (u) 
+    {
       splay(u);
       s[u].ch[1] = v;
       v = u;
@@ -68,10 +82,12 @@ class LinkCutTree {
     }
   }
 
-  void make_root(int u) {
+  void make_root(int u)
+  {
     access(u);
     splay(u);
-    if (s[u].ch[0]) {
+    if (s[u].ch[0]) 
+    {
       s[s[u].ch[0]].fa = 0;
       s[u].ch[0] = 0;
     }
