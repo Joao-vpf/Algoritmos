@@ -10,7 +10,7 @@ int lcs(string a,string b)
 		{
 			if(a[i-1]==b[j-1])
 			{
-				dp[i][j] =dp[i-1][j-1]+vet[a[i-1]-'a']; 
+				dp[i][j] =dp[i-1][j-1] +1 ;//1 ou o valor do caracter quanto são iguais 
 			}
 			else
 			{ 
