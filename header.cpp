@@ -29,7 +29,7 @@ Portin esteve aqui
 #define MAXX LONG_LONG_MAX
 #define MINN LONG_LONG_MIN	
 #define MIN INT_MIN
-#define INF 1e9
+#define INF 1e10
 #define prq priority_queue
 #define unormap unordered_map 
 #define CNS(i) const i&
@@ -43,15 +43,19 @@ Portin esteve aqui
 #define mems(x) memset(x, 0, sizeof(x)) 
 #define pii pair<int,int>
 #define indexed_set tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update>
+#define vi(x) vector<x>
+#define mkt make_tuple
+#define pi 3.141592653589793//384626433832795028841971693993751058209749445923078164
 using namespace std;
 using namespace __gnu_pbds;
 using namespace __gnu_cxx;
+typedef long double ld;
 typedef int_fast16_t li;
 typedef int_fast32_t ll;
 typedef int_fast64_t ill;//-2^63 a 2^63 - 1.
 typedef unsigned long long ull;//0 a 2^64 - 1.
-const ll MOD = 1e9 + 9;
-const int MAXN = 1e5+10;
+const ll MOD = 1e9;
+const int MAXN = 2e5+1;
 /*
 int fx[]={1,-1,0,0};
 int fy[]={0,0,1,-1};
@@ -59,10 +63,12 @@ int fy[]={0,0,1,-1};
 int fx[]={0,0,1,-1,-1,1,-1,1};
 int fy[]={-1,1,0,0,1,1,-1,-1};
 */
-int main()
+
+
+int main() 
 {
 	ios
-	//freop 
+	//freop
 }
 
 //int main()
@@ -83,4 +89,3 @@ int main()
 	//cout<<endl;
 	//}
 //}
- 
