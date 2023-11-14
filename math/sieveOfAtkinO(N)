@@ -1,0 +1,51 @@
+//Pode ser levemente melhor em casos maiores que 10^8
+vector<int> sieveOfAtkin(int limit) 
+{
+    // Inicialização do crivo e do resultado
+    vector<bool> isPrime(limit + 1, false); //pode ser alterado pelo bitset em casos maiores 
+    vector<int> result;
+
+    // Parte 1: Pré-computação dos quadrados
+    int squareRoot = static_cast<int>(sqrt(limit)) + 1;
+    vector<bool> isSquare(squareRoot * squareRoot, false);//pode ser alterado pelo bitset em casos maiores 
+
+    for (int x = 1; x <= squareRoot; ++x) 
+    {
+        for (int y = 1; y <= squareRoot; ++y) 
+        {
+            int n = (4 * x * x) + (y * y);
+            if (n <= limit && (n % 12 == 1 || n % 12 == 5)) 
+                isSquare[n] = !isSquare[n];
+
+            n = (3 * x * x) + (y * y);
+            if (n <= limit && n % 12 == 7) 
+                isSquare[n] = !isSquare[n];
+
+            n = (3 * x * x) - (y * y);
+            if (x > y && n <= limit && n % 12 == 11) 
+                isSquare[n] = !isSquare[n];
+        }
+    }
+
+    // Parte 2: Remoção dos múltiplos dos quadrados
+    for (int r = 5; r <= squareRoot; ++r) 
+    {
+        if (isSquare[r])  
+            for (int i = r * r; i <= limit; i += r * r) isSquare[i] = false;
+    }
+
+    // Parte 3: Adiciona os primos restantes à lista de resultados ->pode ser retirado
+    result.push_back(2);
+    result.push_back(3);
+
+    for (int i = 5; i <= limit; ++i) {
+        if (isSquare[i] && (i % 12 == 1 || i % 12 == 5))
+            result.push_back(i);
+        else if (isSquare[i] && i % 12 == 7)
+            result.push_back(i);
+        else if (isSquare[i] && i % 12 == 11)
+            result.push_back(i);
+    }
+
+    return result;
+}
