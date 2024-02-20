@@ -44,8 +44,6 @@ Portin esteve aqui
 #define mkt make_tuple
 #define pi 3.141592653589793//384626433832795028841971693993751058209749445923078164
 using namespace std;
-using namespace __gnu_pbds;
-using namespace __gnu_cxx;
 typedef long double ld;
 typedef int_fast16_t li;
 typedef int_fast32_t ll;
