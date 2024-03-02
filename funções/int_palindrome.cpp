@@ -1,22 +1,22 @@
-bool verif_palindrome(int num, int& dupNum) 
+ullbool verif_palindrome(int x, int& aux) 
 { 
-    if (num >= 0 && num < 10) 
-        return (num == (*dupNum) % 10); 
+    if (x >= 0 && x < 10) 
+        return (x == (aux) % 10); 
   
-    if (!verif_palindrome(num / 10, dupNum)) 
+    if (!verif_palindrome(x / 10, aux)) 
         return false; 
   
-    dupNum /= 10; 
+    aux /= 10; 
   
-    return (num % 10 == (dupNum) % 10); 
+    return (x % 10 == (aux) % 10); 
 } 
 
-int palindrome(int num) 
+int palindrome(int x) 
 { 
-    if (num < 0) 
-        num = -num; 
+    if (x < 0) 
+        x = -x; 
 
-    int dupNum = num;  
+    int aux = x;  
   
-    return verif_palindrome(num, dupNum); 
+    return verif_palindrome(x, aux); 
 } 
