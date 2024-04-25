@@ -3,16 +3,21 @@ int arr[N];
 ll tree[4 * N];
 ll lazy[4 * N];
 
-void push(int node) 
+void push(int node, int l, int r) 
 {
-    tree[node*2] +=lazy[node];
-    tree[node*2+1]+=lazy[node];
-    lazy[node*2]+=lazy[node];
-    lazy[node*2+1]+=lazy[node];
-    lazy[node]=0;
+    if(lazy[node])
+    {
+        tree[node] += (r-l +1) * lazy[node];
+        if(l != r)
+        {
+            lazy[node*2] += lazy[node];
+            lazy[node*2+1] += lazy[node];
+        }
+        lazy[node]=0;
+    }
 }
 
-void build(int node, int l, int r) //começar com node=1, l=0, r=n-1 ->isso segue para outros
+void build(int node, int l, int r)
 {
     if (l == r) 
     {
@@ -29,44 +34,43 @@ void build(int node, int l, int r) //começar com node=1, l=0, r=n-1 ->isso segu
 
 void update(int node, int l, int r, int ql, int qr, int val) 
 {
-    if (qr < l || ql > r) 
-    {
-        return;
-    } 
+    push(node, l, r);
+
+    if (l>r || qr < l || ql > r)  return;
+
     if (ql <= l && qr >= r) 
     {
-        lazy[node] += val;
-        push(node, l, r);
+        tree[node] += (r-l+1) * val;
+        
+        if(l != r)
+        {
+            lazy[node*2] += val;
+            lazy[node*2+1] += val;
+        }
+
         return;
     } 
     
-    push(node);
     int mid = (l + r) / 2;
-    
-    if (ql <= mid) 
-    {
-        update(2 * node, l, mid, ql, qr, val);
-    }
-    if (qr > mid) 
-    {
-        update(2 * node + 1, mid + 1, r, ql, qr, val);
-    }
-    
+    update(2 * node, l, mid, ql, qr, val);
+    update(2 * node + 1, mid + 1, r, ql, qr, val);
     tree[node] = tree[2 * node] + tree[2 * node + 1];
 }
 
 ll query(int node, int l, int r, int ql, int qr) 
 {
+    push(node, l, r);
+
     if (qr < l || ql > r) 
     {
         return 0;
     } 
+
     if (ql <= l && qr >= r) 
     {
         return tree[node];
     } 
     
-    push(node);
     int mid = (l + r) / 2;
     return query(2 * node, l, mid, ql, qr) + query(2 * node + 1, mid + 1, r, ql, qr);
 }
